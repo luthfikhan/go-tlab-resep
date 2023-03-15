@@ -1,0 +1,386 @@
+swagger: '2.0'
+info:
+  title: Aplikasi Resep Restoran
+  description: API untuk mencatat resep makanan, bahan makanan, dan kategori makanan pada restoran.
+  version: 1.0.0
+basePath: /api
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+
+paths:
+  /recipes:
+    get:
+      summary: Mendapatkan semua resep
+      description: Mendapatkan daftar semua resep yang telah tersedia.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Recipe'
+        '500':
+          description: Kesalahan server
+    post:
+      summary: Menambahkan resep baru
+      description: Menambahkan resep baru dengan bahan-bahan yang diberikan.
+      parameters:
+        - in: body
+          name: recipe
+          description: Resep baru yang ingin ditambahkan.
+          schema:
+            $ref: '#/definitions/RecipeInput'
+      responses:
+        '201':
+          description: Resep berhasil ditambahkan
+          schema:
+            $ref: '#/definitions/Recipe'
+        '400':
+          description: Bad Request
+        '500':
+          description: Kesalahan server
+
+  /recipes/{id}:
+    get:
+      summary: Mendapatkan resep berdasarkan ID
+      description: Mendapatkan resep berdasarkan ID yang diberikan.
+      parameters:
+        - in: path
+          name: id
+          description: ID resep yang ingin dicari.
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Recipe'
+        '404':
+          description: Resep tidak ditemukan
+        '500':
+          description: Kesalahan server
+    put:
+      summary: Mengubah resep
+      description: Mengubah resep berdasarkan ID yang diberikan.
+      parameters:
+        - in: path
+          name: id
+          description: ID resep yang ingin diubah.
+          required: true
+          type: integer
+        - in: body
+          name: recipe
+          description: Data resep yang ingin diubah.
+          schema:
+            $ref: '#/definitions/RecipeInput'
+      responses:
+        '200':
+          description: Resep berhasil diubah
+          schema:
+            $ref: '#/definitions/Recipe'
+        '400':
+          description: Bad Request
+        '404':
+          description: Resep tidak ditemukan
+        '500':
+          description: Kesalahan server
+    delete:
+      summary: Menghapus resep
+      description: Menghapus resep berdasarkan ID yang diberikan.
+      parameters:
+        - in: path
+          name: id
+          description: ID resep yang ingin dihapus.
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Resep berhasil dihapus
+        '404':
+          description: Resep tidak ditemukan
+        '500':
+          description: Kesalahan server
+
+  /ingredients:
+    get:
+      summary: Mendapatkan semua bahan makanan
+      description: Mendapatkan daftar semua bahan makanan yang telah tersedia.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Ingredient'
+        '500':
+          description: Kesalahan server
+    post:
+      summary: Menambahkan bahan makanan baru
+      description: Menambahkan bahan makanan baru dengan nama yang diberikan.
+      parameters:
+        - in: body
+          name: ingredient
+          description: Bahan makanan baru yang ingin ditambahkan.
+          schema:
+            $ref: '#/definitions/IngredientInput'
+      responses:
+        '201':
+          description: Bahan makanan berhasil ditambahkan
+        '400':
+          description: Bad Request
+        '500':
+          description: Kesalahan server
+  /ingredients/{id}:
+    get:
+      summary: Mendapatkan bahan makanan berdasarkan ID
+      description: Mendapatkan bahan makanan berdasarkan ID yang diberikan.
+      parameters:
+        - in: path
+          name: id
+          description: ID bahan makanan yang ingin dicari.
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Ingredient'
+        '404':
+          description: Bahan makanan tidak ditemukan
+        '500':
+          description: Kesalahan server
+    put:
+      summary: Mengubah bahan makanan
+      description: Mengubah bahan makanan berdasarkan ID yang diberikan.
+      parameters:
+      - in: path
+        name: id
+        description: ID bahan makanan yang ingin diubah.
+        required: true
+        type: integer
+      - in: body
+        name: ingredient
+        description: Data bahan makanan yang ingin diubah.
+        schema:
+          $ref: '#/definitions/IngredientInput'
+      responses:
+        '200':
+          description: Bahan makanan berhasil diubah
+        '400':
+          description: Bad Request
+        '404':
+          description: Bahan makanan tidak ditemukan
+        '500':
+          description: Kesalahan server
+    delete:
+      summary: Menghapus bahan makanan
+      description: Menghapus bahan makanan berdasarkan ID yang diberikan.
+      parameters:
+      - in: path
+        name: id
+        description: ID bahan makanan yang ingin dihapus.
+        required: true
+        type: integer
+      responses:
+        '200':
+          description: Bahan makanan berhasil dihapus
+        '404':
+          description: Bahan makanan tidak ditemukan
+        '500':
+          description: Kesalahan server
+
+  /categories:
+    get:
+      summary: Mendapatkan semua kategori makanan
+      description: Mendapatkan daftar semua kategori makanan yang telah tersedia.
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Category'
+        '500':
+          description: Kesalahan server
+    post:
+      summary: Menambahkan kategori makanan baru
+      description: Menambahkan kategori makanan baru dengan nama yang diberikan.
+      parameters:
+      - in: body
+        name: category
+        description: Kategori makanan baru yang ingin ditambahkan.
+        schema:
+          $ref: '#/definitions/CategoryInput'
+      responses:
+        '201':
+          description: Kategori makanan berhasil ditambahkan
+        '400':
+          description: Bad Request
+        '500':
+          description: Kesalahan server
+  /categories/{id}:
+    get:
+      summary: Mendapatkan kategori makanan berdasarkan ID
+      description: Mendapatkan kategori makanan berdasarkan ID yang diberikan.
+      parameters:
+      - in: path
+        name: id
+        description: ID kategori makanan yang ingin dicari.
+        required: true
+        type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Category'
+        '404':
+          description: Kategori makanan tidak ditemukan
+        '500':
+          description: Kesalahan server
+    put:
+      summary: Mengubah kategori makanan
+      description: Mengubah kategori makanan berdasarkan ID yang diberikan.
+      parameters:
+      - in: path
+        name: id
+        description: ID kategori makanan yang ingin diubah.
+        required: true
+        type: integer
+      - in: body
+        name: category
+        description: Data kategori makanan yang ingin diubah.
+        schema:
+          $ref: '#/definitions/CategoryInput'
+      responses:
+        '200':
+          description: Kategori makanan berhasil diubah
+        '400':
+          description: Bad Request
+        '404':
+          description: Kategori makanan tidak ditemukan
+        '500':
+          description: Kesalahan server
+    delete:
+      summary: Menghapus kategori makanan
+      description: Menghapus kategori makanan berdasarkan ID yang diberikan.
+      parameters:
+      - in: path
+        name: id
+        description: ID kategori makanan yang ingin dihapus.
+        required: true
+        type: integer
+      responses:
+        '200':
+          description: Kategori makanan berhasil dihapus
+        '404':
+          description: Kategori makanan tidak ditemukan
+        '500':
+          description: Kesalahan server
+
+definitions:
+  Recipe:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: ID resep
+      name:
+        type: string
+        description: Nama resep
+      category:
+        type: string
+        description: Kategori resep
+      ingredients:
+        type: array
+        items:
+          $ref: '#/definitions/RecipeIngredient'
+        description: Bahan-bahan yang digunakan pada resep
+    required:
+      - name
+      - category
+      - ingredients
+
+  RecipeIngredient:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: ID bahan makanan
+      name:
+        type: string
+        description: Nama bahan makanan
+      amount:
+        type: string
+        description: jumlah bahan makanan
+
+  Ingredient:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: ID bahan makanan
+      name:
+        type: string
+        description: Nama bahan makanan
+    required:
+      - name
+
+  RecipeInput:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Nama resep
+      category_id:
+        type: number
+        description: Kategori resep
+      ingredients:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: integer
+              description: ID bahan makanan
+            amount:
+              type: string
+              description: Jumlah bahan yang dibutuhkan dalam resep
+        description: Bahan-bahan yang digunakan pada resep
+    required:
+      - name
+      - category
+      - ingredients
+
+  IngredientInput:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Nama bahan makanan
+    required:
+      - name
+
+  Category:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: ID dari kategori makanan
+      name:
+        type: string
+        description: Nama kategori makanan
+    required:
+      - name
+
+  CategoryInput:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Nama kategori makanan
+    required:
+      - name
